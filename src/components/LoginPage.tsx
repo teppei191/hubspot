@@ -1,16 +1,26 @@
-import React from 'react';
-import { useMsal } from '@azure/msal-react';
-import { loginRequest } from '../authConfig';
+import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { PrimaryButton } from './PrimaryButton';
+import { InputField } from './InputField';
 
-export const LoginPage: React.FC = () => {
-  const { instance } = useMsal();
+export const LoginPage = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
 
-  const handleLogin = async () => {
-    try {
-      await instance.loginPopup(loginRequest);
-    } catch (error) {
-      console.error('Login failed:', error);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!username || !password) {
+      setError('ユーザー名とパスワードを入力してください');
+      return;
+    }
+
+    const success = login(username, password);
+    if (!success) {
+      setError('ログインに失敗しました');
     }
   };
 
@@ -18,7 +28,6 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-[#F5F8FA] flex items-center justify-center p-4">
       <div className="bg-white rounded-lg border border-[#DFE3EB] p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          {/* Logo placeholder - you can add your logo here */}
           <div className="w-16 h-16 bg-[#FF7A59] rounded-lg mx-auto mb-4 flex items-center justify-center">
             <svg
               className="w-10 h-10 text-white"
@@ -35,51 +44,69 @@ export const LoginPage: React.FC = () => {
             </svg>
           </div>
           <h1 className="mb-2" style={{ fontSize: '24px', lineHeight: '32px' }}>
-            Welcome to HubSpot
+            HubSpotへようこそ
           </h1>
           <p className="text-[#7C98B6]" style={{ fontSize: '14px', lineHeight: '22px' }}>
-            Sign in with your Azure AD account to continue
+            アカウントにログインしてください
           </p>
         </div>
 
-        <div className="space-y-4">
-          <PrimaryButton
-            onClick={handleLogin}
-            className="w-full justify-center"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              viewBox="0 0 23 23"
-              fill="none"
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="username"
+              className="block mb-2"
+              style={{ fontSize: '14px', lineHeight: '22px', fontWeight: 500, color: '#33475B' }}
             >
-              <path
-                d="M11 0h11.5v11H11V0z"
-                fill="#f25022"
-              />
-              <path
-                d="M0 0h11v11H0V0z"
-                fill="#00a4ef"
-              />
-              <path
-                d="M11 11.5h11.5v11H11v-11z"
-                fill="#ffb900"
-              />
-              <path
-                d="M0 11.5h11v11H0v-11z"
-                fill="#7fba00"
-              />
-            </svg>
-            Sign in with Microsoft
+              ユーザー名
+            </label>
+            <InputField
+              id="username"
+              type="text"
+              placeholder="ユーザー名を入力"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block mb-2"
+              style={{ fontSize: '14px', lineHeight: '22px', fontWeight: 500, color: '#33475B' }}
+            >
+              パスワード
+            </label>
+            <InputField
+              id="password"
+              type="password"
+              placeholder="パスワードを入力"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+          </div>
+
+          {error && (
+            <div
+              className="p-3 rounded bg-red-50 border border-red-200"
+              style={{ fontSize: '14px', lineHeight: '22px', color: '#d93025' }}
+            >
+              {error}
+            </div>
+          )}
+
+          <PrimaryButton type="submit" className="w-full justify-center">
+            ログイン
           </PrimaryButton>
 
           <div className="mt-6 pt-6 border-t border-[#DFE3EB]">
             <p className="text-[#7C98B6] text-center" style={{ fontSize: '12px', lineHeight: '16px' }}>
-              This app uses Microsoft Azure AD for authentication.
-              <br />
-              Contact your administrator if you need access.
+              デモ用のログインです。任意のユーザー名とパスワードでログインできます。
             </p>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

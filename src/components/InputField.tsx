@@ -7,23 +7,29 @@ interface InputFieldProps {
   type?: string;
   disabled?: boolean;
   className?: string;
+  id?: string;
+  autoComplete?: string;
 }
 
-export function InputField({ 
-  placeholder, 
-  value, 
-  onChange, 
-  type = 'text', 
+export function InputField({
+  placeholder,
+  value,
+  onChange,
+  type = 'text',
   disabled = false,
-  className = '' 
+  className = '',
+  id,
+  autoComplete
 }: InputFieldProps) {
   return (
     <input
+      id={id}
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
       disabled={disabled}
+      autoComplete={autoComplete}
       className={`
         h-10 px-3
         bg-[#F5F8FA] 

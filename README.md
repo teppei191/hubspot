@@ -4,7 +4,7 @@ HubSpotクローンプロジェクトのコードベースです。オリジナ�
 
 ## 機能
 
-- Microsoft Azure ADによる認証機能
+- シンプルなユーザー名・パスワード認証
 - セールスパイプラインのカンバンボード
 - 企業詳細ページ
 - エンタープライズグレードのUIコンポーネント
@@ -17,31 +17,7 @@ HubSpotクローンプロジェクトのコードベースです。オリジナ�
 npm i
 ```
 
-### 2. Azure ADの設定
-
-1. [Azure Portal](https://portal.azure.com) にアクセス
-2. **Azure Active Directory** > **アプリの登録** > **新規登録** に移動
-3. アプリケーションを登録：
-   - 名前: HubSpot Clone（または任意の名前）
-   - サポートされているアカウントの種類: ニーズに応じて選択
-   - リダイレクトURI: `http://localhost:3000` （シングルページアプリケーション）
-4. **アプリケーション（クライアント）ID** と **ディレクトリ（テナント）ID** をコピー
-5. ルートディレクトリに `.env` ファイルを作成：
-
-```bash
-cp .env.example .env
-```
-
-6. `.env` ファイルをAzure ADの認証情報で更新：
-
-```env
-VITE_AZURE_CLIENT_ID=あなたのクライアントID
-VITE_AZURE_AUTHORITY=https://login.microsoftonline.com/あなたのテナントID
-VITE_REDIRECT_URI=http://localhost:3000
-VITE_POST_LOGOUT_REDIRECT_URI=http://localhost:3000
-```
-
-### 3. 開発サーバーの起動
+### 2. 開発サーバーの起動
 
 ```bash
 npm run dev
@@ -51,4 +27,16 @@ npm run dev
 
 ## 認証について
 
-このアプリケーションは、Azure AD認証にMicrosoft Authentication Library (MSAL) を使用しています。アプリケーションにアクセスするには、Microsoftアカウントでサインインする必要があります。
+このアプリケーションはデモ用のシンプルな認証システムを使用しています。任意のユーザー名とパスワードを入力することでログインできます。
+
+認証情報はセッションストレージに保存され、ブラウザを閉じるまで有効です。
+
+### 本番環境での使用について
+
+現在の認証システムはデモ用です。本番環境で使用する場合は、以下の実装が推奨されます：
+
+- バックエンドAPIとの連携
+- JWT トークンベースの認証
+- パスワードのハッシュ化
+- セッション管理の強化
+- Azure AD、Auth0、Firebase Authenticationなどの認証サービスの利用

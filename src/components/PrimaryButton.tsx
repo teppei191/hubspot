@@ -5,11 +5,13 @@ interface PrimaryButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-export function PrimaryButton({ children, onClick, disabled = false, className = '' }: PrimaryButtonProps) {
+export function PrimaryButton({ children, onClick, disabled = false, className = '', type = 'button' }: PrimaryButtonProps) {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`

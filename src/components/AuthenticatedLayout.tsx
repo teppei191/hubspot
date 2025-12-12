@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMsal } from '@azure/msal-react';
+import { useAuth } from '../contexts/AuthContext';
 import { LogOut, User } from 'lucide-react';
 
 interface AuthenticatedLayoutProps {
@@ -7,13 +7,10 @@ interface AuthenticatedLayoutProps {
 }
 
 export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children }) => {
-  const { instance, accounts } = useMsal();
-  const account = accounts[0];
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    instance.logoutPopup({
-      mainWindowRedirectUri: '/'
-    });
+    logout();
   };
 
   return (
@@ -49,10 +46,10 @@ export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ childr
               </div>
               <div className="text-left">
                 <p style={{ fontSize: '14px', lineHeight: '20px', fontWeight: 500, color: '#33475B' }}>
-                  {account?.name || 'User'}
+                  {user?.name || 'ユーザー'}
                 </p>
                 <p style={{ fontSize: '12px', lineHeight: '16px', color: '#7C98B6' }}>
-                  {account?.username}
+                  {user?.username}
                 </p>
               </div>
             </div>
@@ -62,7 +59,7 @@ export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ childr
               style={{ fontSize: '14px', lineHeight: '22px', color: '#516F90' }}
             >
               <LogOut className="w-4 h-4" />
-              Sign Out
+              サインアウト
             </button>
           </div>
         </div>

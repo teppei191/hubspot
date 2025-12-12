@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useIsAuthenticated } from '@azure/msal-react';
+import { useAuth } from './contexts/AuthContext';
 import { LoginPage } from './components/LoginPage';
 import { AuthenticatedLayout } from './components/AuthenticatedLayout';
 import { SalesPipelineKanban } from './components/SalesPipelineKanban';
@@ -11,7 +11,7 @@ import { TableRow } from './components/TableRow';
 import { Plus, Search, Download, Upload, ArrowLeft } from 'lucide-react';
 
 export default function App() {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     return <LoginPage />;
