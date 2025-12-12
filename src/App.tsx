@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useIsAuthenticated } from '@azure/msal-react';
+import { LoginPage } from './components/LoginPage';
+import { AuthenticatedLayout } from './components/AuthenticatedLayout';
 import { SalesPipelineKanban } from './components/SalesPipelineKanban';
 import { CompanyDetailPage } from './components/CompanyDetailPage';
 import { PrimaryButton } from './components/PrimaryButton';
@@ -8,6 +11,11 @@ import { TableRow } from './components/TableRow';
 import { Plus, Search, Download, Upload, ArrowLeft } from 'lucide-react';
 
 export default function App() {
+  const isAuthenticated = useIsAuthenticated();
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
   const [view, setView] = useState<'kanban' | 'uikit' | 'company'>('company');
   const [searchValue, setSearchValue] = useState('');
   const [rows, setRows] = useState([
@@ -23,12 +31,16 @@ export default function App() {
   };
 
   if (view === 'company') {
-    return <CompanyDetailPage onNavigate={(newView) => setView(newView)} />;
+    return (
+      <AuthenticatedLayout>
+        <CompanyDetailPage onNavigate={(newView) => setView(newView)} />
+      </AuthenticatedLayout>
+    );
   }
 
   if (view === 'kanban') {
     return (
-      <div className="min-h-screen bg-[#F5F8FA]">
+      <AuthenticatedLayout>
         <div className="p-6 border-b border-[#DFE3EB] bg-white">
           <PrimaryButton onClick={() => setView('uikit')}>
             <ArrowLeft className="w-4 h-4" />
@@ -36,12 +48,13 @@ export default function App() {
           </PrimaryButton>
         </div>
         <SalesPipelineKanban />
-      </div>
+      </AuthenticatedLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F8FA] p-8">
+    <AuthenticatedLayout>
+      <div className="p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -302,6 +315,7 @@ export default function App() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </AuthenticatedLayout>
   );
 }
