@@ -1,54 +1,54 @@
 # creating_hubspot
 
-This is a code bundle for creating_hubspot. The original project is available at https://www.figma.com/design/CTBHZl1tKwBYsX1JdDpN0F/creating_hubspot.
+HubSpotクローンプロジェクトのコードベースです。オリジナルのプロジェクトは https://www.figma.com/design/CTBHZl1tKwBYsX1JdDpN0F/creating_hubspot で確認できます。
 
-## Features
+## 機能
 
-- Azure AD authentication with Microsoft identity platform
-- Sales pipeline Kanban board
-- Company detail page
-- Enterprise-grade UI components
+- Microsoft Azure ADによる認証機能
+- セールスパイプラインのカンバンボード
+- 企業詳細ページ
+- エンタープライズグレードのUIコンポーネント
 
-## Setup
+## セットアップ
 
-### 1. Install dependencies
+### 1. 依存関係のインストール
 
 ```bash
 npm i
 ```
 
-### 2. Configure Azure AD
+### 2. Azure ADの設定
 
-1. Go to [Azure Portal](https://portal.azure.com)
-2. Navigate to **Azure Active Directory** > **App registrations** > **New registration**
-3. Register your application:
-   - Name: HubSpot Clone (or your preferred name)
-   - Supported account types: Choose based on your needs
-   - Redirect URI: `http://localhost:3000` (Single-page application)
-4. Copy the **Application (client) ID** and **Directory (tenant) ID**
-5. Create a `.env` file in the root directory:
+1. [Azure Portal](https://portal.azure.com) にアクセス
+2. **Azure Active Directory** > **アプリの登録** > **新規登録** に移動
+3. アプリケーションを登録：
+   - 名前: HubSpot Clone（または任意の名前）
+   - サポートされているアカウントの種類: ニーズに応じて選択
+   - リダイレクトURI: `http://localhost:3000` （シングルページアプリケーション）
+4. **アプリケーション（クライアント）ID** と **ディレクトリ（テナント）ID** をコピー
+5. ルートディレクトリに `.env` ファイルを作成：
 
 ```bash
 cp .env.example .env
 ```
 
-6. Update the `.env` file with your Azure AD credentials:
+6. `.env` ファイルをAzure ADの認証情報で更新：
 
 ```env
-VITE_AZURE_CLIENT_ID=your-client-id-here
-VITE_AZURE_AUTHORITY=https://login.microsoftonline.com/your-tenant-id-here
+VITE_AZURE_CLIENT_ID=あなたのクライアントID
+VITE_AZURE_AUTHORITY=https://login.microsoftonline.com/あなたのテナントID
 VITE_REDIRECT_URI=http://localhost:3000
 VITE_POST_LOGOUT_REDIRECT_URI=http://localhost:3000
 ```
 
-### 3. Run the development server
+### 3. 開発サーバーの起動
 
 ```bash
 npm run dev
 ```
 
-The application will be available at http://localhost:3000
+アプリケーションは http://localhost:3000 でアクセスできます。
 
-## Authentication
+## 認証について
 
-This application uses Microsoft Authentication Library (MSAL) for Azure AD authentication. Users must sign in with their Microsoft account to access the application.
+このアプリケーションは、Azure AD認証にMicrosoft Authentication Library (MSAL) を使用しています。アプリケーションにアクセスするには、Microsoftアカウントでサインインする必要があります。
